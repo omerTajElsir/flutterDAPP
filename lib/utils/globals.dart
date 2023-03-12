@@ -2,6 +2,7 @@ import 'package:walletconnect_dart/walletconnect_dart.dart';
 
 import '../data/market/models/dropdown_items_model.dart';
 
+/// Token list variables
 List dropdownItems = [
   const DropdownItemsModel('WETH', "assets/logo/ETHUSDT.png",
       "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2", 18),
@@ -14,22 +15,6 @@ List dropdownItems = [
   const DropdownItemsModel('BUSD', "assets/logo/BUSDUSDT.png",
       "0x4Fabb145d64652a948d72533023f6E7A623C7C53", 18),
 ];
-
-String ethRPC = "https://eth.llamarpc.com";
-bool isWalletConnected = false;
-
-String deepLinkUri = "";
-
-WalletConnect globalConnector = WalletConnect(
-  bridge: 'https://bridge.walletconnect.org',
-  //create on uuid for each user
-  clientMeta: const PeerMeta(
-    name: 'Test application',
-    description: 'Your favorite trading app want to connect to your wallet',
-    url: 'https://test.vai.com',
-    icons: [],
-  ),
-);
 
 const List<String> coinLogos = [
   "BTCUSDT",
@@ -57,3 +42,20 @@ const List<String> coinLogos = [
   "WAVEUSDT",
   "XRPUSDT",
 ];
+
+/// wallet connection variables
+String ethRPC = "https://eth.llamarpc.com";
+bool isWalletConnected = false;
+
+String deepLinkUri = "";
+
+WalletConnect globalConnector = WalletConnect(
+  bridge: 'https://bridge.walletconnect.org',
+  //create on uuid for each user
+  clientMeta: const PeerMeta(
+    name: 'Test application',
+    description: 'Your favorite trading app want to connect to your wallet',
+    url: 'https://test.vai.com',
+    icons: [],
+  ),
+);

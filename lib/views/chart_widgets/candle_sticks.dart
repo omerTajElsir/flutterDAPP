@@ -1,9 +1,9 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_app/constants/intervals.dart';
 
 import '../../data/chart/models/chart_model.dart';
+import '../../utils/constants/intervals.dart';
 import 'mobile_chart.dart';
 import 'toolbar.dart';
 

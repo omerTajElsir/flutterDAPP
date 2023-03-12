@@ -43,6 +43,49 @@ class WalletProvider with ChangeNotifier {
     }
   }
 
+  Future<String> readNFC() async {
+    var availability = await FlutterNfcKit.nfcAvailability;
+    if (availability != NFCAvailability.available) {
+      // oh-no
+    }
+
+// timeout only works on Android, while the latter two messages are only for iOS
+    var tag = await FlutterNfcKit.poll(
+        timeout: Duration(seconds: 10),
+        iosMultipleTagMessage: "Multiple tags found!",
+        iosAlertMessage: "Scan your tag");
+
+    print(jsonEncode(tag));
+    String _result = "Empty";
+
+    if (tag.standard == "ISO 14443-4 (Type B)") {
+      String result1 = await FlutterNfcKit.transceive("00B0950000");
+      String result2 =
+          await FlutterNfcKit.transceive("00A4040009A00000000386980701");
+      _result = '1: $result1\n2: $result2\n';
+    } else if (tag.type == NFCTagType.iso18092) {
+      String result1 = await FlutterNfcKit.transceive("060080080100");
+
+      _result = '1: $result1\n';
+    } else if (tag.type == NFCTagType.mifare_ultralight ||
+        tag.type == NFCTagType.mifare_classic ||
+        tag.type == NFCTagType.iso15693 ||
+        tag.type == NFCTagType.iso7816) {
+      var ndefRecords = await FlutterNfcKit.readNDEFRecords();
+      var ndefString = '';
+      for (int i = 0; i < ndefRecords.length; i++) {
+        ndefString += '${i + 1}: ${ndefRecords[i]}\n';
+      }
+      _result = ndefString;
+    } else if (tag.type == NFCTagType.webusb) {
+      _result = await FlutterNfcKit.transceive("00A4040006D27600012401");
+    }
+
+// Call finish() only once
+    await FlutterNfcKit.finish();
+    return _result;
+  }
+
   Future<bool> connect() async {
     try {
       await globalConnector.createSession(onDisplayUri: (uri) async {
@@ -148,48 +191,5 @@ class WalletProvider with ChangeNotifier {
     } catch (e) {
       return Decimal.zero;
     }
-  }
-
-  Future<String> readNFC() async {
-    var availability = await FlutterNfcKit.nfcAvailability;
-    if (availability != NFCAvailability.available) {
-      // oh-no
-    }
-
-// timeout only works on Android, while the latter two messages are only for iOS
-    var tag = await FlutterNfcKit.poll(
-        timeout: Duration(seconds: 10),
-        iosMultipleTagMessage: "Multiple tags found!",
-        iosAlertMessage: "Scan your tag");
-
-    print(jsonEncode(tag));
-    String _result = "Empty";
-
-    if (tag.standard == "ISO 14443-4 (Type B)") {
-      String result1 = await FlutterNfcKit.transceive("00B0950000");
-      String result2 =
-          await FlutterNfcKit.transceive("00A4040009A00000000386980701");
-      _result = '1: $result1\n2: $result2\n';
-    } else if (tag.type == NFCTagType.iso18092) {
-      String result1 = await FlutterNfcKit.transceive("060080080100");
-
-      _result = '1: $result1\n';
-    } else if (tag.type == NFCTagType.mifare_ultralight ||
-        tag.type == NFCTagType.mifare_classic ||
-        tag.type == NFCTagType.iso15693 ||
-        tag.type == NFCTagType.iso7816) {
-      var ndefRecords = await FlutterNfcKit.readNDEFRecords();
-      var ndefString = '';
-      for (int i = 0; i < ndefRecords.length; i++) {
-        ndefString += '${i + 1}: ${ndefRecords[i]}\n';
-      }
-      _result = ndefString;
-    } else if (tag.type == NFCTagType.webusb) {
-      _result = await FlutterNfcKit.transceive("00A4040006D27600012401");
-    }
-
-// Call finish() only once
-    await FlutterNfcKit.finish();
-    return _result;
   }
 }

@@ -1,10 +1,9 @@
-
 import 'package:flutter/material.dart';
-import 'package:flutter_app/constants/view_constants.dart';
 import 'package:flutter_app/theme/theme_data.dart';
 import 'package:flutter_app/utils/helper_functions.dart';
 
 import '../../data/chart/models/chart_model.dart';
+import '../../utils/constants/view_constants.dart';
 
 class PriceColumn extends StatelessWidget {
   const PriceColumn({

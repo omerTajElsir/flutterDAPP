@@ -1,10 +1,12 @@
 import 'dart:math';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_app/constants/scales.dart';
-import 'package:flutter_app/constants/view_constants.dart';
 import 'package:flutter_app/theme/theme_data.dart';
 import 'package:flutter_app/utils/helper_functions.dart';
+
 import '../../data/chart/models/chart_model.dart';
+import '../../utils/constants/scales.dart';
+import '../../utils/constants/view_constants.dart';
 import 'candle_info_text.dart';
 import 'candle_stick_widget.dart';
 import 'dash_line.dart';
