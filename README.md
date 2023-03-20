@@ -1,4 +1,6 @@
-## Flutter DAPP submission
+## Flutter DAPP
+
+![Alt text](/assets/1.jpg?raw=true)
 
 #Discription
 A  Flutter application to display top tokens with prices and price change over 24h from Binance with the ability to connect wallet. I wanted to also add unit tests but the time for the test was too short as I had 2 days for the project.
